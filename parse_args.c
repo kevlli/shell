@@ -10,11 +10,11 @@
 // TODO: cd, exit, recieve input, check for semicolon
 void execute(char *line);
 
-int main() {
-  char cmd[] = "ls -a -l -d -b -i";
-  execute(cmd);
-  return 0;
-}
+// int main() {
+//   char cmd[] = "ls -a -l -d -b -i";
+//   execute(cmd);
+//   return 0;
+// }
 
 void execute(char *line) {
   int i = 0;
