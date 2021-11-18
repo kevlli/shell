@@ -6,19 +6,13 @@
 #include <signal.h>
 #include <errno.h>
 
-char ** parse_args(char *line);
+
+// TODO: cd, exit
+void execute(char *line);
 
 int main() {
   char cmd[] = "ls -a -l";
-  printf("Command: %s\n", cmd);
-  char **args = parse_args(cmd);
-  printf("Executing...\n");
-  execvp(args[0], args);
-  // int i;
-  // for (i = 0; i < 5; i++) {
-  //   printf("%s\n", args[i]);
-  // }
-  free(args);
+  execute(cmd);
   return 0;
 }
 
@@ -35,5 +29,7 @@ void execute(char *line) {
     printf("Argument %d: %s\n", i+1, token);
     i++;
   }
-  //if (i > 5) args = realloc(args, sizeof(char *) * i);
+  if (i > 5) args = realloc(args, sizeof(char *) * i);
+  execvp(args[0], args);
+  free(args);
 }
