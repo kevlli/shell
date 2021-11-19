@@ -18,12 +18,9 @@ void cd(char *line);
 //   return 0;
 // }
 
-<<<<<<< HEAD
 
-void execute(char *line) {
-=======
 void execute_cmd(char *line) {
->>>>>>> b5c6ec9edb22511339da9800ca1c00e37c5c49b1
+
   int i = 0;
   char **args;
   args = malloc(sizeof(char *) * 5);
