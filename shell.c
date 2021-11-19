@@ -4,20 +4,29 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <signal.h>
-#include "parse_args.c"
+#include "parse_args.h"
 
 int main() {
   char buffer[255];
   int f, status;
-  while (1) {
-    printf("$ ");
-    fgets(buffer, sizeof(buffer) - 1, stdin);
+  int p = getpid();
+  printf("$ ");
+  while (p == getpid()) {
     int i = fork();
     if (i) {
-      execute(buffer);
+      printf("$ ");
+      f = wait(&status);
     }
     else {
-      f = wait(&status);
+      fgets(buffer, sizeof(buffer) - 1, stdin);
+      //printf("%s\n", buffer);
+
+      int c = 0;
+      while (buffer[c] != '\n') {
+        c++;
+      }
+      buffer[c] = 0;
+      execute_cmd(buffer);
     }
   }
 }

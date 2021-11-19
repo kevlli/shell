@@ -25,7 +25,7 @@ void execute_cmd(char *line) {
   while (curr) {
     token = strsep(&curr, " ");
     args[i] = token;
-    // printf("Argument %d: %s\n", i+1, token);
+    //printf("Argument %d: %s\n", i+1, token);
     i++;
   }
   if (i > 5) args = realloc(args, sizeof(char *) * i);
