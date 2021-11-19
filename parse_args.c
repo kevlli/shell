@@ -9,7 +9,6 @@
 
 // TODO: cd, exit, recieve input, check for semicolon
 
-void cd(char *line);
 
 // int main() {
 //   char cmd[] = "ls -a -l -d -b -i";
@@ -17,33 +16,22 @@ void cd(char *line);
 //   execute(cmd);
 //   return 0;
 // }
-void parse_cmd(char *line) {
-  int i = 0;
-  char **args;
-  args = malloc(sizeof(char *) * 5);
-  char *curr = line;
-  char *token;
-  //printf("a\n");
-
-  while (curr) {
-    token = strsep(&curr, " ");
-    args[i] = token;
-    //printf("Argument %d: %s\n", i+1, token);
-    i++;
-  }
-
-  if (i > 5) args = realloc(args, sizeof(char *) * i);
-
-  if (!strcmp(args[0],"cd")) {
-    change_dir(args[1]);
-    return;
-  }
-  execute_cmd(args);
-}
 
 void execute_cmd(char **line) {
   execvp(line[0], line);
   free(line);
+}
+
+void execute_multiple(char **a, char **b) {
+  int i = fork();
+  int f, status;
+  if (i) {
+    f = wait(&status);
+    execute_cmd(b);
+  }
+  else {
+    execute_cmd(a);
+  }
 }
 
 
@@ -52,5 +40,4 @@ void change_dir(char *line) { // cd does not change shell's directory. needs fix
   char s[100];
   printf("%s\n",line);
   printf("%s\n",getcwd(s, 100));
-  //printf("%s\n",strerror(a));
 }
