@@ -5,10 +5,9 @@
 #include <string.h>
 #include <signal.h>
 #include <errno.h>
-
+#include "parse_args.h"
 
 // TODO: cd, exit, recieve input, check for semicolon
-void execute(char *line);
 
 // int main() {
 //   char cmd[] = "ls -a -l -d -b -i";
@@ -16,7 +15,7 @@ void execute(char *line);
 //   return 0;
 // }
 
-void execute(char *line) {
+void execute_cmd(char *line) {
   int i = 0;
   char **args;
   args = malloc(sizeof(char *) * 5);
