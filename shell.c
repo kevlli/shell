@@ -14,7 +14,6 @@ int main() {
   while (p == getpid()) {
     int i = fork();
     if (i) {
-      printf("$ ");
       f = wait(&status);
     }
     else {
