@@ -45,7 +45,8 @@ void execute_cmd(char *line) {
   free(args);
 }
 
-void cd(char *line) {
+
+void cd(char *line) { // cd does not change shell's directory. needs fixing
   int a = chdir(line);
   printf("%s\n",strerror(a));
 }
