@@ -10,11 +10,15 @@
 // TODO: cd, exit, recieve input, check for semicolon
 void execute(char *line);
 
+void cd(char *line);
+
 // int main() {
 //   char cmd[] = "ls -a -l -d -b -i";
+//   char cmd[] = "cd fake";
 //   execute(cmd);
 //   return 0;
 // }
+
 
 void execute(char *line) {
   int i = 0;
@@ -23,13 +27,25 @@ void execute(char *line) {
   char *curr = line;
   char *token;
   //printf("a\n");
+  
   while (curr) {
     token = strsep(&curr, " ");
     args[i] = token;
     // printf("Argument %d: %s\n", i+1, token);
     i++;
   }
+  
+  if ( !strcmp(args[0],"cd") ) {
+    cd(args[1]);
+    return;
+  }
+  
   if (i > 5) args = realloc(args, sizeof(char *) * i);
   execvp(args[0], args);
   free(args);
+}
+
+void cd(char *line) {
+  int a = chdir(line);
+  printf("%s\n",strerror(a));
 }
