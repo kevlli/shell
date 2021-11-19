@@ -25,7 +25,7 @@ int main() {
         c++;
       }
       buffer[c] = 0;
-      execute_cmd(buffer);
+      parse_cmd(buffer);
     }
   }
 }
