@@ -5,10 +5,9 @@
 #include <string.h>
 #include <signal.h>
 #include <errno.h>
-
+#include "parse_args.h"
 
 // TODO: cd, exit, recieve input, check for semicolon
-void execute(char *line);
 
 void cd(char *line);
 
@@ -19,8 +18,12 @@ void cd(char *line);
 //   return 0;
 // }
 
+<<<<<<< HEAD
 
 void execute(char *line) {
+=======
+void execute_cmd(char *line) {
+>>>>>>> b5c6ec9edb22511339da9800ca1c00e37c5c49b1
   int i = 0;
   char **args;
   args = malloc(sizeof(char *) * 5);
@@ -31,7 +34,7 @@ void execute(char *line) {
   while (curr) {
     token = strsep(&curr, " ");
     args[i] = token;
-    // printf("Argument %d: %s\n", i+1, token);
+    //printf("Argument %d: %s\n", i+1, token);
     i++;
   }
   
