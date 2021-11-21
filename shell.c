@@ -16,6 +16,12 @@ int main() {
     int i = fork();
     if (i) {
       f = wait(&status);
+      if (WEXITSTATUS(status) == 1) {
+        printf("f\n");
+      }
+      if (WEXITSTATUS(status) == 2) {
+        kill(getpid(), 2);
+      }
       //printf("%s\n", buffer);
     }
     else {
@@ -42,7 +48,17 @@ int main() {
         execute_multiple(parse_cmd(cmds[0]),parse_cmd(cmds[1]));
         return 0;
       }
-      execute_cmd(parse_cmd(buffer));
+
+      char** args = parse_cmd(buffer);
+      if (strcmp(args[0],"cd") == 0) {
+        return 1;
+      }
+
+      if (strcmp(args[0],"exit") == 0) {
+        return 2;
+      }
+
+      execute_cmd(args);
     }
   }
   return 0;
@@ -64,10 +80,5 @@ char** parse_cmd(char *line) {
     }
 
     if (i > 5) args = realloc(args, sizeof(char *) * i);
-
-    if (!strcmp(args[0],"cd")) {
-      change_dir(args[1]);
-      return 0;
-    }
     return args;
 }
