@@ -9,33 +9,32 @@
 
 int main() {
   char buffer[255];
+  char path[100];
   int f, status;
   int p = getpid();
+  printf("Fash v1.0\n");
+  printf("%s", getcwd(path, 100));
   printf("$ ");
   while (p == getpid()) {
     int i = fork();
     if (i) {
       f = wait(&status);
-      if (WEXITSTATUS(status) == 1) {
-        printf("f\n");
-      }
-      if (WEXITSTATUS(status) == 2) {
-        kill(getpid(), 2);
-      }
-      //printf("%s\n", buffer);
+
+      if (WEXITSTATUS(status) == 1) printf("f\n");
+      if (WEXITSTATUS(status) == 2) kill(getpid(), 2);
     }
     else {
       fgets(buffer, sizeof(buffer) - 1, stdin);
-      //printf("%s\n", buffer);
 
       int c = 0;
-      int status = 0;
+      int s = 0;
       while (buffer[c] != '\n') {
-        if (buffer[c] == ';') status = 1;
+        if (buffer[c] == ';') s = 1;
         c++;
       }
       buffer[c] = 0;
-      if (status == 1) {
+
+      if (s == 1) {
         char **cmds;
         char *curr = buffer;
         char *token;
