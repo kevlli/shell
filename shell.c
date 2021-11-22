@@ -21,6 +21,8 @@ int main() {
     int s = 0;
     while (buffer[c] != '\n') {
       if (buffer[c] == ';') s = 1;
+      if (buffer[c] == '>') s = 2;
+      if (buffer[c] == '<') s = 3;
       c++;
     }
     buffer[c] = 0;
@@ -43,8 +45,21 @@ int main() {
           cmds[c] = token;
           c++;
         }
+        int i;
+        for (i = 0; i < c; i++) {
+          if (strcmp(cmds[0],"cd") == 0) {
+            return 1;
+          }
+
+          if (strcmp(cmds[0],"exit") == 0) {
+            return 2;
+          }
+        }
         execute_multiple(parse_cmd(cmds[0]),parse_cmd(cmds[1]));
         return 0;
+      }
+      else if (s == 2) {
+        
       }
 
       char** args = parse_cmd(buffer);
@@ -60,23 +75,4 @@ int main() {
     }
   }
   return 0;
-}
-
-char** parse_cmd(char *line) {
-    int i = 0;
-    char **args;
-    args = malloc(sizeof(char *) * 5);
-    char *curr = line;
-    char *token;
-
-    while (curr) {
-      token = strsep(&curr, " ");
-      if (strcmp(token, "")) args[i] = token;
-      else i--;
-      //printf("Argument %d: %s\n", i+1, token);
-      i++;
-    }
-
-    if (i > 5) args = realloc(args, sizeof(char *) * i);
-    return args;
 }

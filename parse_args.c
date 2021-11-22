@@ -25,8 +25,21 @@ void execute_multiple(char **a, char **b) {
   }
 }
 
-void change_dir(char *line) { // cd does not change shell's directory. needs fixing
-  chdir(line);
-  // printf("%s\n",line);
-  // printf("%s\n",getcwd(s, 100));
+char** parse_cmd(char *line) {
+    int i = 0;
+    char **args;
+    args = malloc(sizeof(char *) * 5);
+    char *curr = line;
+    char *token;
+
+    while (curr) {
+      token = strsep(&curr, " ");
+      if (strcmp(token, "")) args[i] = token;
+      else i--;
+      //printf("Argument %d: %s\n", i+1, token);
+      i++;
+    }
+
+    if (i > 5) args = realloc(args, sizeof(char *) * i);
+    return args;
 }
