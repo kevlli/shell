@@ -13,27 +13,30 @@ int main() {
   int f, status;
   int p = getpid();
   printf("Fash v1.0\n");
-  printf("%s", getcwd(path, 100));
-  printf("$ ");
   while (p == getpid()) {
+    printf("%s", getcwd(path, 100));
+    printf("$ ");
+    fgets(buffer, sizeof(buffer) - 1, stdin);
+    
+    int c = 0;
+    int s = 0;
+    while (buffer[c] != '\n') {
+      if (buffer[c] == ';') s = 1;
+      c++;
+    }
+    buffer[c] = 0;
+
     int i = fork();
     if (i) {
       f = wait(&status);
 
-      if (WEXITSTATUS(status) == 1) printf("f\n");
+      if (WEXITSTATUS(status) == 1) {
+        chdir(parse_cmd(buffer)[1]);
+        //chdir("/Users");
+      }
       if (WEXITSTATUS(status) == 2) kill(getpid(), 2);
     }
     else {
-      fgets(buffer, sizeof(buffer) - 1, stdin);
-
-      int c = 0;
-      int s = 0;
-      while (buffer[c] != '\n') {
-        if (buffer[c] == ';') s = 1;
-        c++;
-      }
-      buffer[c] = 0;
-
       if (s == 1) {
         char **cmds;
         char *curr = buffer;

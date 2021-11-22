@@ -38,6 +38,6 @@ void execute_multiple(char **a, char **b) {
 void change_dir(char *line) { // cd does not change shell's directory. needs fixing
   chdir(line);
   char s[100];
-  printf("%s\n",line);
-  printf("%s\n",getcwd(s, 100));
+  // printf("%s\n",line);
+  // printf("%s\n",getcwd(s, 100));
 }
