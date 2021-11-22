@@ -12,12 +12,11 @@ int main() {
   char path[100];
   int f, status;
   int p = getpid();
-  printf("Fash v1.0\n");
   while (p == getpid()) {
     printf("%s", getcwd(path, 100));
     printf("$ ");
     fgets(buffer, sizeof(buffer) - 1, stdin);
-    
+
     int c = 0;
     int s = 0;
     while (buffer[c] != '\n') {
@@ -30,10 +29,7 @@ int main() {
     if (i) {
       f = wait(&status);
 
-      if (WEXITSTATUS(status) == 1) {
-        chdir(parse_cmd(buffer)[1]);
-        //chdir("/Users");
-      }
+      if (WEXITSTATUS(status) == 1) chdir(parse_cmd(buffer)[1]);
       if (WEXITSTATUS(status) == 2) kill(getpid(), 2);
     }
     else {
@@ -72,11 +68,11 @@ char** parse_cmd(char *line) {
     args = malloc(sizeof(char *) * 5);
     char *curr = line;
     char *token;
-    //printf("a\n");
 
     while (curr) {
       token = strsep(&curr, " ");
-      args[i] = token;
+      if (strcmp(token, "")) args[i] = token;
+      else i--;
       //printf("Argument %d: %s\n", i+1, token);
       i++;
     }
