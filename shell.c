@@ -49,11 +49,13 @@ int main() {
       else if (s == 2) {
         char **cmds = seperate_cmds(buffer, '>');
         redirect_out(cmds);
+        free(cmds);
         return 0;
       }
       else if (s == 3) {
         char **cmds = seperate_cmds(buffer, '>'); //need to figure out a way to distringuish
         redirect_out(cmds);
+        free(cmds);
         return 0;
       }
 
