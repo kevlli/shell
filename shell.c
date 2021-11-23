@@ -45,21 +45,30 @@ int main() {
           cmds[c] = token;
           c++;
         }
-        int i;
-        for (i = 0; i < c; i++) {
-          if (strcmp(cmds[0],"cd") == 0) {
-            return 1;
-          }
-
-          if (strcmp(cmds[0],"exit") == 0) {
-            return 2;
-          }
-        }
+        // int i;
+        // for (i = 0; i < c; i++) {
+        //   if (strcmp(cmds[i],"cd") == 0) {
+        //     return 1;
+        //   }
+        //
+        //   if (strcmp(cmds[i],"exit") == 0) {
+        //     return 2;
+        //   }
+        // }
         execute_multiple(parse_cmd(cmds[0]),parse_cmd(cmds[1]));
         return 0;
       }
       else if (s == 2) {
-        
+        char **cmds;
+        char *curr = buffer;
+        char *token;
+        c = 0;
+        while (curr) {
+          token = strsep(&curr, ">");
+          cmds[c] = token;
+          c++;
+        }
+        redirect_out(cmds, c);
       }
 
       char** args = parse_cmd(buffer);

@@ -1,13 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <signal.h>
 #include <errno.h>
 #include "parse_args.h"
 
-// TODO:
+#define STDIN_FILENUM 0
+#define STDOUT_FILENUM 1
+
+// TODO: redirection, piping
 void execute_cmd(char **line) {
   execvp(line[0], line);
   free(line);
@@ -23,6 +27,19 @@ void execute_multiple(char **a, char **b) {
   else {
     execute_cmd(a);
   }
+}
+
+void redirect_out(char **line, int size) {
+  // int i;
+  // for (i = 0; i < size; i++) {
+  //   parse_cmd(line[i]);
+  // }
+  char **cmd = parse_cmd(line[0]);
+  int fd1 = open(parse_cmd(line[1])[0], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+  int backup_stdout = dup(STDOUT_FILENUM);
+  dup2(fd1, STDOUT_FILENUM);
+  execvp(cmd[0], cmd);
+  dup2(backup_stdout, STDOUT_FILENUM);
 }
 
 char** parse_cmd(char *line) {
