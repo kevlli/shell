@@ -7,16 +7,7 @@
 #include <errno.h>
 #include "parse_args.h"
 
-// TODO: cd, exit, recieve input, check for semicolon
-
-
-// int main() {
-//   char cmd[] = "ls -a -l -d -b -i";
-//   char cmd[] = "cd fake";
-//   execute(cmd);
-//   return 0;
-// }
-
+// TODO:
 void execute_cmd(char **line) {
   execvp(line[0], line);
   free(line);
@@ -34,10 +25,21 @@ void execute_multiple(char **a, char **b) {
   }
 }
 
+char** parse_cmd(char *line) {
+    int i = 0;
+    char **args;
+    args = malloc(sizeof(char *) * 5);
+    char *curr = line;
+    char *token;
 
-void change_dir(char *line) { // cd does not change shell's directory. needs fixing
-  chdir(line);
-  char s[100];
-  // printf("%s\n",line);
-  // printf("%s\n",getcwd(s, 100));
+    while (curr) {
+      token = strsep(&curr, " ");
+      if (strcmp(token, "")) args[i] = token;
+      else i--;
+      //printf("Argument %d: %s\n", i+1, token);
+      i++;
+    }
+
+    if (i > 5) args = realloc(args, sizeof(char *) * i);
+    return args;
 }
