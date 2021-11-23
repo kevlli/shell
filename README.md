@@ -1,10 +1,12 @@
 # project01
 ## Shell Project
 ### Features:
-Runs terminal commands (except cd and exit stuff)
-Run multiple commands on one line
+Runs terminal commands  
+Supports commands seperated by ';'
+Redirects stdout
+Runs commands with leading or trailing spaces
 ### Abandoned Features:
 
-### Bugs:
+### Bugs / Info:
 
 ### Functions Headers:

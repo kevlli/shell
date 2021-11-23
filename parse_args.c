@@ -29,17 +29,25 @@ void execute_multiple(char **a, char **b) {
   }
 }
 
-void redirect_out(char **line) {
+void redirect_out(char **line, int i) {
   char **cmd = parse_cmd(line[0]);
-  int fd1 = open(parse_cmd(line[1])[0], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+  int fd1;
+  if (i) fd1 = open(parse_cmd(line[1])[0], O_WRONLY | O_APPEND | O_CREAT, 0644);
+  else fd1 = open(parse_cmd(line[1])[0], O_WRONLY | O_TRUNC | O_CREAT, 0644);
   int backup_stdout = dup(STDOUT_FILENUM);
   dup2(fd1, STDOUT_FILENUM);
   execvp(cmd[0], cmd);
   dup2(backup_stdout, STDOUT_FILENUM);
+  close(fd1);
 }
 
 void redirect_in(char **line) {
-
+  char **cmd = parse_cmd(line[0]);
+  int fd1 = open(parse_cmd(line[1])[0], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+  int backup_stdin = dup(STDIN_FILENUM);
+  dup2(fd1, STDIN_FILENUM);
+  execvp(cmd[0], cmd);
+  dup2(backup_stdin, STDIN_FILENUM);
 }
 
 char** parse_cmd(char *line) {

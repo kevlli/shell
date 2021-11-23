@@ -22,12 +22,10 @@ int main() {
     while (buffer[c] != '\n') {
       if (buffer[c] == ';') s = 1;
       if (buffer[c] == '>') {
-        if (buffer[c+1] == '>') {
-          s = 3;
-        }
-          s = 2;
+        if (buffer[c+1] == '>') s = 3;
+        else s = 2;
       }
-      if (buffer[c] == '<') s = 3;
+      if (buffer[c] == '<') s = 4;
       c++;
     }
     buffer[c] = 0;
@@ -48,13 +46,13 @@ int main() {
       }
       else if (s == 2) {
         char **cmds = seperate_cmds(buffer, '>');
-        redirect_out(cmds);
+        redirect_out(cmds, 0);
         free(cmds);
         return 0;
       }
       else if (s == 3) {
         char **cmds = seperate_cmds(buffer, '>'); //need to figure out a way to distringuish
-        redirect_out(cmds);
+        redirect_out(cmds, 1);
         free(cmds);
         return 0;
       }
@@ -81,7 +79,8 @@ char** seperate_cmds(char *line, char sep) {
   int c = 0;
   while (curr) {
     token = strsep(&curr, &sep);
-    cmds[c] = token;
+    if (strcmp(token, "")) cmds[c] = token;
+    else c--;
     c++;
   }
   if (c > 8) cmds = realloc(cmds, sizeof(char *) * c);
