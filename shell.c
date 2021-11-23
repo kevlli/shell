@@ -21,7 +21,12 @@ int main() {
     int s = 0;
     while (buffer[c] != '\n') {
       if (buffer[c] == ';') s = 1;
-      if (buffer[c] == '>') s = 2;
+      if (buffer[c] == '>') {
+        if (buffer[c+1] == '>') {
+          s = 3;
+        }
+          s = 2;
+      }
       if (buffer[c] == '<') s = 3;
       c++;
     }
@@ -36,39 +41,20 @@ int main() {
     }
     else {
       if (s == 1) {
-        char **cmds;
-        char *curr = buffer;
-        char *token;
-        c = 0;
-        while (curr) {
-          token = strsep(&curr, ";");
-          cmds[c] = token;
-          c++;
-        }
-        // int i;
-        // for (i = 0; i < c; i++) {
-        //   if (strcmp(cmds[i],"cd") == 0) {
-        //     return 1;
-        //   }
-        //
-        //   if (strcmp(cmds[i],"exit") == 0) {
-        //     return 2;
-        //   }
-        // }
+        char **cmds = seperate_cmds(buffer, ';');
         execute_multiple(parse_cmd(cmds[0]),parse_cmd(cmds[1]));
+        free(cmds);
         return 0;
       }
       else if (s == 2) {
-        char **cmds;
-        char *curr = buffer;
-        char *token;
-        c = 0;
-        while (curr) {
-          token = strsep(&curr, ">");
-          cmds[c] = token;
-          c++;
-        }
-        redirect_out(cmds, c);
+        char **cmds = seperate_cmds(buffer, '>');
+        redirect_out(cmds);
+        return 0;
+      }
+      else if (s == 3) {
+        char **cmds = seperate_cmds(buffer, '>'); //need to figure out a way to distringuish
+        redirect_out(cmds);
+        return 0;
       }
 
       char** args = parse_cmd(buffer);
@@ -84,4 +70,18 @@ int main() {
     }
   }
   return 0;
+}
+
+char** seperate_cmds(char *line, char sep) {
+  char **cmds = malloc(8 * sizeof(char*));
+  char *curr = line;
+  char *token;
+  int c = 0;
+  while (curr) {
+    token = strsep(&curr, &sep);
+    cmds[c] = token;
+    c++;
+  }
+  if (c > 8) cmds = realloc(cmds, sizeof(char *) * c);
+  return cmds;
 }
