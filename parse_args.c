@@ -68,8 +68,10 @@ void redirect_in(char **line) {
 void simple_pipe(char ** line) { //need to remove extra spaces from commands
   FILE *pipein_fp, *pipeout_fp;
   char readbuf[80];
-  char **cmd = parse_cmd("ls");
-  char **cmd2 = parse_cmd("wc");
+  char *cmd = line[0];
+  remove_whitespace(cmd);
+  char *cmd2 = line[1];
+  remove_whitespace(cmd2);
   pipein_fp = popen(cmd, "r");
   pipeout_fp = popen(cmd2, "w");
   while (fgets(readbuf, 80, pipein_fp) != NULL) {
@@ -77,7 +79,6 @@ void simple_pipe(char ** line) { //need to remove extra spaces from commands
   }
   pclose(pipein_fp);
   pclose(pipeout_fp);
-
 }
 
 char** parse_cmd(char *line) {
@@ -97,4 +98,23 @@ char** parse_cmd(char *line) {
 
     if (i > 5) args = realloc(args, sizeof(char *) * i);
     return args;
+}
+
+char* remove_whitespace(char *str) {
+  int len = 0;
+  int i = 0;
+  while (str[i]) {
+    len++;
+    i++;
+  }
+  while (str[i] == ' ') {
+    str[i] = 0;
+    i--;
+  }
+  i = 0;
+  while (str[i] == ' ') {
+    i++;
+    str++;
+  }
+  return str;
 }

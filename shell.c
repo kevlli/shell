@@ -65,7 +65,7 @@ int main() {
       }
       else if (s == 5) {
         cmds = seperate_cmds(buffer, '|');
-	simple_pipe(cmds);
+	      simple_pipe(cmds);
         free(cmds);
         return 0;
       }

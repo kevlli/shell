@@ -6,3 +6,5 @@ char** parse_cmd(char *line);
 void redirect_out(char **line, int i);
 void redirect_in(char **line);
 void simple_pipe(char ** line);
+
+char* remove_whitespace(char *str);
