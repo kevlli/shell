@@ -19,7 +19,7 @@ int main() {
     fgets(buffer, sizeof(buffer) - 1, stdin);
 
     int s = read_cmd(buffer);
-
+    // char **fun;
     int i = fork();
     if (i) {
       f = wait(&status);
@@ -28,7 +28,13 @@ int main() {
         int error = chdir(parse_cmd(buffer)[1]);
         if (error == -1) printf("%s\n", strerror(errno));
       }
-      if (WEXITSTATUS(status) == 2) kill(getpid(), 2);
+      if (WEXITSTATUS(status) == 2) exit(0);
+      // if (WEXITSTATUS(status) == 3) {
+      //   fun = seperate_cmds(buffer, ';');
+      //   char **a = parse_cmd(fun[0]);
+      //   char **b = parse_cmd(fun[1]);
+      //   if (strcmp(a[0], "cd") == 0) chdir(a[1]);
+      // }
     }
     else {
       char **cmds;
