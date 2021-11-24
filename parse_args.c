@@ -65,20 +65,18 @@ void redirect_in(char **line) {
   dup2(backup_stdin, STDIN_FILENUM);
 }
 
-void simple_pipe(char ** line) {
+void simple_pipe(char ** line) { //need to remove extra spaces from commands
   FILE *pipein_fp, *pipeout_fp;
   char readbuf[80];
-  char **cmd = parse_cmd(line[0]);
-  char **cmd2 = parse_cmd(line[1]);
-  pipein_fp = popen(line[0], "r");
-  pipeout_fp = popen(line[1], "w");
-  
-  while (fgets(readbuf, 80, pipein_fp) != NULL)
+  char **cmd = parse_cmd("ls");
+  char **cmd2 = parse_cmd("wc");
+  pipein_fp = popen(cmd, "r");
+  pipeout_fp = popen(cmd2, "w");
+  while (fgets(readbuf, 80, pipein_fp) != NULL) {
   	fputs(readbuf, pipeout_fp);
-  
-
+  }
   pclose(pipein_fp);
-  pclose(pipeout_fp); 
+  pclose(pipeout_fp);
 
 }
 
