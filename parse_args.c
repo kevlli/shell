@@ -66,8 +66,19 @@ void redirect_in(char **line) {
 }
 
 void simple_pipe(char ** line) {
+  FILE *pipein_fp, *pipeout_fp;
+  char readbuf[80];
   char **cmd = parse_cmd(line[0]);
-  char **cmd2 = parse_cmd(line [1]);
+  char **cmd2 = parse_cmd(line[1]);
+  pipein_fp = popen(line[0], "r");
+  pipeout_fp = popen(line[1], "w");
+  
+  while (fgets(readbuf, 80, pipein_fp) != NULL)
+  	fputs(readbuf, pipeout_fp);
+  
+
+  pclose(pipein_fp);
+  pclose(pipeout_fp); 
 
 }
 

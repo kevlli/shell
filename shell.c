@@ -35,7 +35,7 @@ int main() {
       if (s == 1) {
         cmds = seperate_cmds(buffer, ';');
         execute_multiple(parse_cmd(cmds[0]),parse_cmd(cmds[1]));
-        execute_multiple_test(cmds);
+        //execute_multiple_test(cmds);
         free(cmds);
         return 0;
       }
@@ -59,8 +59,7 @@ int main() {
       }
       else if (s == 5) {
         cmds = seperate_cmds(buffer, '|');
-
-
+	simple_pipe(cmds);
         free(cmds);
         return 0;
       }
