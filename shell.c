@@ -24,8 +24,10 @@ int main() {
       if (buffer[c] == '>') {
         if (buffer[c+1] == '>') s = 3;
         else s = 2;
+        c++;
       }
       if (buffer[c] == '<') s = 4;
+      if (buffer[c] == '|') s = 5;
       c++;
     }
     buffer[c] = 0;
@@ -53,6 +55,15 @@ int main() {
       else if (s == 3) {
         char **cmds = seperate_cmds(buffer, '>'); //need to figure out a way to distringuish
         redirect_out(cmds, 1);
+        free(cmds);
+        return 0;
+      }
+      else if (s == 4) {
+      }
+      else if (s == 5) {
+        char **cmds = seperate_cmds(buffer, '|');
+
+
         free(cmds);
         return 0;
       }

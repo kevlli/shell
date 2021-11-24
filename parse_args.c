@@ -38,6 +38,7 @@ void redirect_out(char **line, int i) {
   dup2(fd1, STDOUT_FILENUM);
   execvp(cmd[0], cmd);
   dup2(backup_stdout, STDOUT_FILENUM);
+  printf(">\n");
   close(fd1);
 }
 
@@ -48,6 +49,12 @@ void redirect_in(char **line) {
   dup2(fd1, STDIN_FILENUM);
   execvp(cmd[0], cmd);
   dup2(backup_stdin, STDIN_FILENUM);
+}
+
+void simple_pipe(char ** line) {
+  char **cmd = parse_cmd(line[0]);
+  char **cmd2 = parse_cmd(line [1]);
+
 }
 
 char** parse_cmd(char *line) {
