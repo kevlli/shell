@@ -4,6 +4,7 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <signal.h>
+#include <errno.h>
 #include "parse_args.h"
 #include "shell.h"
 
@@ -36,7 +37,11 @@ int main() {
     if (i) {
       f = wait(&status);
 
-      if (WEXITSTATUS(status) == 1) chdir(parse_cmd(buffer)[1]);
+      if (WEXITSTATUS(status) == 1) {
+        int error = chdir(parse_cmd(buffer)[1]);
+        if (error == -1) 
+          printf("%s\n", strerror(errno));
+      }
       if (WEXITSTATUS(status) == 2) kill(getpid(), 2);
     }
     else {
