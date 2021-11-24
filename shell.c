@@ -4,6 +4,7 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <signal.h>
+#include <errno.h>
 #include "parse_args.h"
 #include "shell.h"
 
@@ -27,8 +28,10 @@ int main() {
           c++;
         }
         else s = 2;
+        c++; // increments twice so the 2nd > isn't read and s != 2
       }
       if (buffer[c] == '<') s = 4;
+      if (buffer[c] == '|') s = 5;
       c++;
     }
     buffer[c] = 0;
@@ -37,7 +40,11 @@ int main() {
     if (i) {
       f = wait(&status);
 
-      if (WEXITSTATUS(status) == 1) chdir(parse_cmd(buffer)[1]);
+      if (WEXITSTATUS(status) == 1) {
+        int error = chdir(parse_cmd(buffer)[1]);
+        if (error == -1) 
+          printf("%s\n", strerror(errno));
+      }
       if (WEXITSTATUS(status) == 2) kill(getpid(), 2);
     }
     else {
@@ -56,6 +63,19 @@ int main() {
       else if (s == 3) {
         char **cmds = seperate_cmds(buffer, '>'); //need to figure out a way to distringuish
         redirect_out(cmds, 1);
+        free(cmds);
+        return 0;
+      }
+      else if (s == 4) {
+        char **cmds = seperate_cmds(buffer, '<');
+        redirect_in(cmds);
+        free(cmds);
+        return 0;
+      }
+      else if (s == 5) {
+        char **cmds = seperate_cmds(buffer, '|');
+
+
         free(cmds);
         return 0;
       }
