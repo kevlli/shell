@@ -24,7 +24,7 @@ int main() {
       if (buffer[c] == '>') {
         if (buffer[c+1] == '>') s = 3;
         else s = 2;
-        c++;
+        c++; // increments twice so the 2nd > isn't read and s != 2
       }
       if (buffer[c] == '<') s = 4;
       if (buffer[c] == '|') s = 5;
@@ -59,6 +59,10 @@ int main() {
         return 0;
       }
       else if (s == 4) {
+        char **cmds = seperate_cmds(buffer, '<');
+        redirect_in(cmds);
+        free(cmds);
+        return 0;
       }
       else if (s == 5) {
         char **cmds = seperate_cmds(buffer, '|');

@@ -44,7 +44,7 @@ void redirect_out(char **line, int i) {
 
 void redirect_in(char **line) {
   char **cmd = parse_cmd(line[0]);
-  int fd1 = open(parse_cmd(line[1])[0], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+  int fd1 = open(parse_cmd(line[1])[0], O_RDONLY); //changed to RDONLY
   int backup_stdin = dup(STDIN_FILENUM);
   dup2(fd1, STDIN_FILENUM);
   execvp(cmd[0], cmd);
