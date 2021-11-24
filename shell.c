@@ -22,7 +22,10 @@ int main() {
     while (buffer[c] != '\n') {
       if (buffer[c] == ';') s = 1;
       if (buffer[c] == '>') {
-        if (buffer[c+1] == '>') s = 3;
+        if (buffer[c+1] == '>') {
+          s = 3;
+          c++;
+        }
         else s = 2;
       }
       if (buffer[c] == '<') s = 4;
