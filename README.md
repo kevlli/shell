@@ -11,5 +11,5 @@ Runs commands with leading or trailing spaces
 Running more than 2 commands at the same time with semicolons  
 ### Bugs / Info:
 Only run redirection / semicolons / piping one at a time  
-Cd and exit doesn't run  
+Cd and exit doesn't run inside '>', '<', ';', '|'
 ### Functions Headers:
