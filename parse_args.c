@@ -29,6 +29,19 @@ void execute_multiple(char **a, char **b) {
   }
 }
 
+// void execute_multiple_test(char **line) {
+//   int i, c, f, status;
+//   char **cmd = line;
+//   while (cmd) {
+//     cmd = parse_cmd(line[i]);
+//     i++;
+//
+//     c = fork();
+//     if (i) f = wait(&status);
+//     else execute_cmd(cmd);
+//   }
+// }
+
 void redirect_out(char **line, int i) {
   char **cmd = parse_cmd(line[0]);
   char *n = parse_cmd(line[1])[0];

@@ -18,23 +18,7 @@ int main() {
     printf("$ ");
     fgets(buffer, sizeof(buffer) - 1, stdin);
 
-    int c = 0;
-    int s = 0;
-    while (buffer[c] != '\n') {
-      if (buffer[c] == ';') s = 1;
-      if (buffer[c] == '>') {
-        if (buffer[c+1] == '>') {
-          s = 3;
-          c++;
-        }
-        else s = 2;
-        c++; // increments twice so the 2nd > isn't read and s != 2
-      }
-      if (buffer[c] == '<') s = 4;
-      if (buffer[c] == '|') s = 5;
-      c++;
-    }
-    buffer[c] = 0;
+    int s = read_cmd(buffer);
 
     int i = fork();
     if (i) {
@@ -42,38 +26,39 @@ int main() {
 
       if (WEXITSTATUS(status) == 1) {
         int error = chdir(parse_cmd(buffer)[1]);
-        if (error == -1) 
-          printf("%s\n", strerror(errno));
+        if (error == -1) printf("%s\n", strerror(errno));
       }
       if (WEXITSTATUS(status) == 2) kill(getpid(), 2);
     }
     else {
+      char **cmds;
       if (s == 1) {
-        char **cmds = seperate_cmds(buffer, ';');
+        cmds = seperate_cmds(buffer, ';');
         execute_multiple(parse_cmd(cmds[0]),parse_cmd(cmds[1]));
+        execute_multiple_test(cmds);
         free(cmds);
         return 0;
       }
       else if (s == 2) {
-        char **cmds = seperate_cmds(buffer, '>');
+        cmds = seperate_cmds(buffer, '>');
         redirect_out(cmds, 0);
         free(cmds);
         return 0;
       }
       else if (s == 3) {
-        char **cmds = seperate_cmds(buffer, '>'); //need to figure out a way to distringuish
+        cmds = seperate_cmds(buffer, '>'); //need to figure out a way to distringuish
         redirect_out(cmds, 1);
         free(cmds);
         return 0;
       }
       else if (s == 4) {
-        char **cmds = seperate_cmds(buffer, '<');
+        cmds = seperate_cmds(buffer, '<');
         redirect_in(cmds);
         free(cmds);
         return 0;
       }
       else if (s == 5) {
-        char **cmds = seperate_cmds(buffer, '|');
+        cmds = seperate_cmds(buffer, '|');
 
 
         free(cmds);
@@ -93,6 +78,27 @@ int main() {
     }
   }
   return 0;
+}
+
+int read_cmd(char *line) {
+  int c = 0;
+  int s = 0;
+  while (line[c] != '\n') {
+    if (line[c] == ';') s = 1;
+    if (line[c] == '>') {
+      if (line[c+1] == '>') {
+        s = 3;
+        c++;
+      }
+      else s = 2;
+      c++;
+    }
+    if (line[c] == '<') s = 4;
+    if (line[c] == '|') s = 5;
+    c++;
+  }
+  line[c] = 0;
+  return s;
 }
 
 char** seperate_cmds(char *line, char sep) {
