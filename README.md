@@ -14,8 +14,10 @@ Only run redirection / semicolons / piping one at a time
 Cd and exit doesn't run inside '>', '<', ';', '|'
 Running ls for a nonexistent file exits shell
 ### Functions Headers:
+#### shell.c:
 char** seperate_cmds(char *line, char sep);
 int read_cmd(char *line);
+#### parse_args.c:
 void execute_cmd(char **line);
 void execute_multiple(char **a, char **b);
 char** parse_cmd(char *line);
