@@ -13,7 +13,8 @@
 
 // TODO: redirection, piping
 void execute_cmd(char **line) {
-  execvp(line[0], line);
+  int e = execvp(line[0], line);
+  if (e == -1) printf("%s\n", strerror(errno));
   free(line);
 }
 
