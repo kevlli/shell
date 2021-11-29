@@ -12,6 +12,7 @@ Running more than 2 commands at the same time with semicolons
 ### Bugs / Info:
 Only run redirection / semicolons / piping one at a time  
 Cd and exit doesn't run inside '>', '<', ';', '|'
+Running ls for a nonexistent file exits shell
 ### Functions Headers:
 char** seperate_cmds(char *line, char sep);
 int read_cmd(char *line);
