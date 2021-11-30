@@ -2,14 +2,15 @@
 ## Shell Project
 ### Features:
 Runs all terminal commands with unlimited arguments    
-Supports running multiple commands on one line `;`  
+Supports running multiple commands on one line `;` (including cd)  
 Redirects stdout `>` and `>>`  
 Redirects stdin `<`  
 Supports piping `|`  
 Runs commands with leading or trailing spaces  
 ### Abandoned Features:
 Running more than 2 commands in operators `> >> ; | <`    
-Running cd or exit from commands in operators `> >> ; | <`  
+Running cd from commands in operators `> >> | <`  
+Running exit from operators `> >> | <`  
 ### Bugs / Info:
 Cd doesn't run inside operators `> >> | <`  
 Exit doesn't run inside operators `> >> ; | <`   
