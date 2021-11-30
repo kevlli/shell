@@ -19,7 +19,6 @@ int main() {
     fgets(buffer, sizeof(buffer) - 1, stdin);
 
     int s = read_cmd(buffer);
-    // char **fun;
     int i = fork();
     if (i) {
       f = wait(&status);
@@ -29,19 +28,40 @@ int main() {
         if (error == -1) printf("%s\n", strerror(errno));
       }
       if (WEXITSTATUS(status) == 2) exit(0);
-      // if (WEXITSTATUS(status) == 3) {
-      //   fun = seperate_cmds(buffer, ';');
-      //   char **a = parse_cmd(fun[0]);
-      //   char **b = parse_cmd(fun[1]);
-      //   if (strcmp(a[0], "cd") == 0) chdir(a[1]);
-      // }
+      if (WEXITSTATUS(status) == 3) {
+        char **fun = seperate_cmds(buffer, ';');
+        char **a = parse_cmd(fun[0]);
+        char **b = parse_cmd(fun[1]);
+        if (strcmp(a[0], "cd") == 0) {
+          chdir(a[1]);
+          if (strcmp(b[0], "exit") == 0) exit(0);
+          else {
+            int f = fork();
+            int semi_fork;
+            if (f) wait(&semi_fork);
+            else execute_cmd(b);
+          }
+        }
+        if (strcmp(b[0], "cd") == 0) {
+          if (strcmp(a[0], "exit") == 0) exit(0);
+          else {
+            int f = fork();
+            int semi_fork;
+            if (f) wait(&semi_fork);
+            else execute_cmd(a);
+          }
+          chdir(b[1]);
+        }
+      }
     }
     else {
       char **cmds;
       if (s == 1) {
         cmds = seperate_cmds(buffer, ';');
-        execute_multiple(parse_cmd(cmds[0]),parse_cmd(cmds[1]));
-        //execute_multiple_test(cmds);
+        char **a = parse_cmd(cmds[0]);
+        char **b = parse_cmd(cmds[1]);
+        if (strcmp(a[0], "cd") == 0 || strcmp(b[0], "cd") == 0) return 3;
+        execute_multiple(a, b);
         free(cmds);
         return 0;
       }
