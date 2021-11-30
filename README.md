@@ -11,7 +11,8 @@ Runs commands with leading or trailing spaces
 Running more than 2 commands in operators `> >> ; | <`    
 Running cd or exit from commands in operators `> >> ; | <`  
 ### Bugs / Info:
-Cd and exit doesn't run inside operators `> >> ; | <`  
+Cd doesn't run inside operators `> >> | <`  
+Exit doesn't run inside operators `> >> ; | <`   
 Can't handle more than two commands seperated by operators `> >> ; | <`  
 Buffer size is 255 characters large  
 Running ls for a nonexistent file exits shell
