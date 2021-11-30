@@ -13,6 +13,7 @@ Running cd from commands in operators `> >> | <`
 Running exit from operators `> >> ; | <`  
 ### Bugs / Info:
 Cd doesn't run inside operators `> >> | <`  
+Running two cd's joined by `;` operator is broken  
 Exit doesn't run inside operators `> >> ; | <`   
 Can't handle more than two commands seperated by operators `> >> ; | <`  
 Buffer size is 255 characters large  
