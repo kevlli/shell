@@ -10,7 +10,7 @@ Runs commands with leading or trailing spaces
 ### Abandoned Features:
 Running more than 2 commands in operators `> >> ; | <`    
 Running cd from commands in operators `> >> | <`  
-Running exit from operators `> >> | <`  
+Running exit from operators `> >> ; | <`  
 ### Bugs / Info:
 Cd doesn't run inside operators `> >> | <`  
 Exit doesn't run inside operators `> >> ; | <`   
