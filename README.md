@@ -1,4 +1,4 @@
-# project01
+# Project
 ## Shell Project
 ### Features:
 Runs all terminal commands with unlimited arguments    
